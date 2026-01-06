@@ -1,173 +1,45 @@
 import streamlit as st
 
-# Konfigurasi halaman
+
+# =========================
+# KONFIGURASI HALAMAN
+# =========================
 st.set_page_config(
     page_title="Kalkulator Kimia Analisis",
     page_icon="⚗️",
     layout="centered"
 )
 
-# Judul utama
-st.title("🧪 Selamat datang di Kalkulator Kimia Analisis")
 
-# Subjudul
-st.write("### Silahkan pilih menu di bawah ini")
+st.title("🧪 Kalkulator Kimia Analisis")
+st.write(
+    "Kalkulator ini membantu perhitungan kimia analisis "
+    "agar pengguna lebih memahami konsep perhitungan kimia."
+)
 
-# Menu pilihan
+
+# =========================
+# MENU UTAMA
+# =========================
 menu = st.selectbox(
     "Pilih jenis perhitungan:",
     (
         "Faktor Pengenceran",
-        "Normalitas",
         "Molaritas",
-        "Mg/L",
+        "Normalitas",
+        "mg/L",
         "% b/v",
         "% b/b",
         "% v/v"
     )
 )
 
-# Tampilan berdasarkan menu
-st.markdown("---")
-st.write(f"📌 **Menu yang dipilih:** {menu}")
-
-# Placeholder (nanti bisa diisi rumus & input)
-st.info("Fitur perhitungan akan ditampilkan di sini.")
-
-(Salin yg dibawah) 
-
-import streamlit as st
-
-st.set_page_config(
-    page_title="Kalkulator Kimia Analisis",
-    page_icon="⚗️",
-    layout="centered"
-)
-
-# =========================
-# CSS BACKGROUND & STYLE
-# =========================
-st.markdown(
-    """
-    <style>
-    /* Background utama */
-    .stApp {
-        background: linear-gradient(
-            to right,
-            #e3f2fd,
-            #ffffff
-        );
-    }
-
-    /* Card style */
-    .card {
-        background-color: white;
-        padding: 25px;
-        border-radius: 12px;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-        margin-bottom: 20px;
-    }
-
-    /* Judul */
-    h1, h2, h3 {
-        color: #0d47a1;
-    }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
-
-st.title("🧪 Selamat datang di Kalkulator Kimia Analisis")
-st.write("### Silahkan pilih menu di bawah ini")
-
-menu = st.selectbox(
-    "Pilih jenis perhitungan:",
-    (
-        "Faktor Pengenceran",
-        "Normalitas",
-        "Molaritas",
-        "Mg/L",
-        "% b/v",
-        "% b/b",
-        "% v/v"
-    )
-)
 
 st.markdown("---")
 
-# =========================
-# MENU FAKTOR PENGENCERAN
-# =========================
-if menu == "Faktor Pengenceran":
-
-    st.subheader("⚗️ Faktor Pengenceran")
-
-    sub_menu = st.radio(
-        "Pilih perhitungan:",
-        (
-            "Faktor pengenceran",
-            "Volume yang harus diambil"
-        )
-    )
-
-    st.markdown("---")
-
-    # 1. Faktor Pengenceran
-    if sub_menu == "Faktor pengenceran":
-        st.write("### Faktor pengenceran")
-
-        volume_labu = st.number_input(
-            "Masukkan volume labu takar yang ingin digunakan (mL)",
-            min_value=0.0,
-            format="%.3f"
-        )
-
-        volume_pipet = st.number_input(
-            "Masukkan volume yang dipipet (mL)",
-            min_value=0.0,
-            format="%.3f"
-        )
-
-        if st.button("Hitung Faktor Pengenceran"):
-            if volume_pipet == 0:
-                st.error("Volume yang dipipet tidak boleh 0.")
-            else:
-                faktor_pengenceran = volume_labu / volume_pipet
-                st.success(f"✅ Faktor pengenceran = **{faktor_pengenceran:.3f}**")
-
-    # 2. Volume yang Harus Diambil
-    elif sub_menu == "Volume yang harus diambil":
-        st.write("### Volume yang harus diambil")
-
-        konsentrasi_awal = st.number_input(
-            "Masukkan konsentrasi larutan yang ingin diambil",
-            min_value=0.0,
-            format="%.3f"
-        )
-
-        konsentrasi_akhir = st.number_input(
-            "Masukkan konsentrasi larutan yang ingin dibuat",
-            min_value=0.0,
-            format="%.3f"
-        )
-
-        volume_akhir = st.number_input(
-            "Masukkan volume larutan yang ingin dibuat (mL)",
-            min_value=0.0,
-            format="%.3f"
-        )
-
-        if st.button("Hitung Volume yang Harus Diambil"):
-            if konsentrasi_awal == 0:
-                st.error("Konsentrasi larutan yang ingin diambil tidak boleh 0.")
-            else:
-                volume_diambil = (volume_akhir * konsentrasi_akhir) / konsentrasi_awal
-                st.success(
-                    f"✅ Volume larutan yang harus diambil = **{volume_diambil:.3f} mL**"
-                )
 
 # =========================
-# DATABASE Ar / Mr SENYAWA
+# DATABASE Mr
 # =========================
 mr_database = {
     "NaCl": 58.44,
@@ -182,442 +54,353 @@ mr_database = {
     "CaCO3": 100.09
 }
 
-# =========================
-# MENU MOLARITAS
-# =========================
-if menu == "Molaritas":
-
-    st.subheader("⚗️ Perhitungan Molaritas")
-
-    metode = st.radio(
-        "Pilih metode perhitungan:",
-        (
-            "Menggunakan massa zat",
-            "Menggunakan Mr dari database"
-        )
-    )
-
-    st.markdown("---")
-
-    volume_larutan = st.number_input(
-        "Masukkan volume larutan (L)",
-        min_value=0.0,
-        format="%.3f"
-    )
-
-    if metode == "Menggunakan massa zat":
-        massa = st.number_input(
-            "Masukkan massa zat (gram)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        mr = st.number_input(
-            "Masukkan Mr zat",
-            min_value=0.0,
-            format="%.3f"
-        )
-
-        if st.button("Hitung Molaritas"):
-            if volume_larutan == 0 or mr == 0:
-                st.error("Volume dan Mr tidak boleh 0.")
-            else:
-                molaritas = massa / (mr * volume_larutan)
-                st.success(f"✅ Molaritas = **{molaritas:.4f} M**")
-
-    elif metode == "Menggunakan Mr dari database":
-        senyawa = st.selectbox(
-            "Pilih senyawa:",
-            list(mr_database.keys())
-        )
-
-        massa = st.number_input(
-            "Masukkan massa zat (gram)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        mr = mr_database[senyawa]
-        st.info(f"Mr {senyawa} = {mr}")
-
-        if st.button("Hitung Molaritas"):
-            if volume_larutan == 0:
-                st.error("Volume larutan tidak boleh 0.")
-            else:
-                molaritas = massa / (mr * volume_larutan)
-                st.success(f"✅ Molaritas = **{molaritas:.4f} M**")
 
 # =========================
-# MENU NORMALITAS
+# FAKTOR PENGENCERAN
 # =========================
-if menu == "Normalitas":
+if menu == "Faktor Pengenceran":
 
-    st.subheader("⚗️ Perhitungan Normalitas")
 
-    metode = st.radio(
-        "Pilih metode perhitungan:",
-        (
-            "Menggunakan massa zat",
-            "Menggunakan Mr dari database"
-        )
-    )
-
-    st.markdown("---")
-
-    volume_larutan = st.number_input(
-        "Masukkan volume larutan (L)",
-        min_value=0.0,
-        format="%.3f"
-    )
-
-    faktor_ekivalen = st.number_input(
-        "Masukkan faktor ekivalen (n)",
-        min_value=0.0,
-        format="%.2f",
-        help="Contoh: HCl = 1, H2SO4 = 2, NaOH = 1"
-    )
-
-    if metode == "Menggunakan massa zat":
-        massa = st.number_input(
-            "Masukkan massa zat (gram)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        mr = st.number_input(
-            "Masukkan Mr zat",
-            min_value=0.0,
-            format="%.3f"
-        )
-
-        if st.button("Hitung Normalitas"):
-            if volume_larutan == 0 or mr == 0 or faktor_ekivalen == 0:
-                st.error("Volume, Mr, dan faktor ekivalen tidak boleh 0.")
-            else:
-                normalitas = (massa * faktor_ekivalen) / (mr * volume_larutan)
-                st.success(f"✅ Normalitas = **{normalitas:.4f} N**")
-
-    elif metode == "Menggunakan Mr dari database":
-        senyawa = st.selectbox(
-            "Pilih senyawa:",
-            list(mr_database.keys())
-        )
-
-        massa = st.number_input(
-            "Masukkan massa zat (gram)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        mr = mr_database[senyawa]
-        st.info(f"Mr {senyawa} = {mr}")
-
-        if st.button("Hitung Normalitas"):
-            if volume_larutan == 0 or faktor_ekivalen == 0:
-                st.error("Volume dan faktor ekivalen tidak boleh 0.")
-            else:
-                normalitas = (massa * faktor_ekivalen) / (mr * volume_larutan)
-                st.success(f"✅ Normalitas = **{normalitas:.4f} N**")
-
-# =========================
-# MENU mg/L
-# =========================
-if menu == "Mg/L":
-
-    st.subheader("⚗️ Perhitungan Konsentrasi mg/L")
-
-    sub_menu = st.radio(
-        "Pilih jenis perhitungan:",
-        (
-            "Cari konsentrasi (mg/L)",
-            "Cari massa (mg)",
-            "Cari volume (L)"
-        )
-    )
-
-    st.markdown("---")
-
-    # 1. Cari konsentrasi mg/L
-    if sub_menu == "Cari konsentrasi (mg/L)":
-        st.write("### Menghitung konsentrasi (mg/L)")
-
-        massa = st.number_input(
-            "Masukkan massa zat (mg)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        volume = st.number_input(
-            "Masukkan volume larutan (L)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        if st.button("Hitung Konsentrasi"):
-            if volume == 0:
-                st.error("Volume tidak boleh 0.")
-            else:
-                konsentrasi = massa / volume
-                st.success(f"✅ Konsentrasi = **{konsentrasi:.4f} mg/L**")
-
-    # 2. Cari massa
-    elif sub_menu == "Cari massa (mg)":
-        st.write("### Menghitung massa zat (mg)")
-
-        konsentrasi = st.number_input(
-            "Masukkan konsentrasi (mg/L)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        volume = st.number_input(
-            "Masukkan volume larutan (L)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        if st.button("Hitung Massa"):
-            massa = konsentrasi * volume
-            st.success(f"✅ Massa zat = **{massa:.4f} mg**")
-
-    # 3. Cari volume
-    elif sub_menu == "Cari volume (L)":
-        st.write("### Menghitung volume larutan (L)")
-
-        konsentrasi = st.number_input(
-            "Masukkan konsentrasi (mg/L)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        massa = st.number_input(
-            "Masukkan massa zat (mg)",
-            min_value=0.0,
-            format="%.4f"
-        )
-
-        if st.button("Hitung Volume"):
-            if konsentrasi == 0:
-                st.error("Konsentrasi tidak boleh 0.")
-            else:
-                volume = massa / konsentrasi
-                st.success(f"✅ Volume larutan = **{volume:.4f} L**")
-
-if menu == "% b/v":
-
-    st.subheader("⚗️ Persen berat/volume (% b/v)")
-    st.write("% b/v = gram zat terlarut per 100 mL larutan")
-
+    st.subheader("⚗️ Faktor Pengenceran")
+    st.write("Faktor pengenceran (FP) adalah bilangan yang menyatakan seberapa besar suatu larutan diencerkan dibandingkan larutan awalnya. Faktor pengenceran banyak digunakan dalam kimia analitik, farmasi, biologi, dan analisis instrumen (misalnya AAS) untuk menghitung konsentrasi akhir setelah pengenceran.")
+    st.write("Rumus mencari FP adalah volume labu takar/volume yang dipipet")
+    st.write("Rumus untuk pengenceran adalah Consentration1.Volume1=Consentration2.Volume2")
     sub_menu = st.radio(
         "Pilih perhitungan:",
-        (
-            "Cari % b/v",
-            "Cari massa zat (g)",
-            "Cari volume larutan (mL)"
-        )
+        ("Faktor pengenceran", "Volume yang harus diambil")
     )
+
 
     st.markdown("---")
 
-    # 1. Cari % b/v
-    if sub_menu == "Cari % b/v":
-        massa = st.number_input(
-            "Masukkan massa zat (gram)",
-            min_value=0.0,
-            format="%.4f"
-        )
-        volume = st.number_input(
-            "Masukkan volume larutan (mL)",
-            min_value=0.0,
-            format="%.2f"
-        )
 
-        if st.button("Hitung % b/v"):
-            if volume == 0:
-                st.error("Volume tidak boleh 0.")
+    if sub_menu == "Faktor pengenceran":
+        V_lab = st.number_input("Volume labu takar (mL)", min_value=0.0)
+        V_pipet = st.number_input("Volume yang dipipet (mL)", min_value=0.0)
+
+
+        if st.button("Hitung FP"):
+            if V_pipet == 0:
+                st.error("Volume pipet tidak boleh 0")
             else:
-                persen = (massa / volume) * 100
-                st.success(f"✅ Konsentrasi = **{persen:.4f} % b/v**")
+                st.success(f"FP = **{V_lab / V_pipet:.3f}**")
 
-    # 2. Cari massa
-    elif sub_menu == "Cari massa zat (g)":
-        persen = st.number_input(
-            "Masukkan konsentrasi (% b/v)",
-            min_value=0.0,
-            format="%.4f"
-        )
-        volume = st.number_input(
-            "Masukkan volume larutan (mL)",
-            min_value=0.0,
-            format="%.2f"
-        )
 
-        if st.button("Hitung Massa"):
-            massa = (persen / 100) * volume
-            st.success(f"✅ Massa zat = **{massa:.4f} g**")
+    else:
+        C1 = st.number_input("Konsentrasi awal")
+        C2 = st.number_input("Konsentrasi akhir")
+        V2 = st.number_input("Volume akhir (mL)")
 
-    # 3. Cari volume
-    elif sub_menu == "Cari volume larutan (mL)":
-        persen = st.number_input(
-            "Masukkan konsentrasi (% b/v)",
-            min_value=0.0,
-            format="%.4f"
-        )
-        massa = st.number_input(
-            "Masukkan massa zat (gram)",
-            min_value=0.0,
-            format="%.4f"
-        )
 
         if st.button("Hitung Volume"):
-            if persen == 0:
-                st.error("Konsentrasi tidak boleh 0.")
+            if C1 == 0:
+                st.error("Konsentrasi awal tidak boleh 0")
             else:
-                volume = (massa * 100) / persen
-                st.success(f"✅ Volume larutan = **{volume:.2f} mL**")
+                V1 = (C2 * V2) / C1
+                st.success(f"Volume diambil = **{V1:.3f} mL**")
 
-if menu == "% b/b":
+
+# =========================
+# MOLARITAS
+# =========================
+elif menu == "Molaritas":
+
+
+    st.subheader("⚗️ Molaritas")
+    st.write("Molaritas (M) adalah satuan konsentrasi larutan yang menyatakan jumlah mol zat terlarut dalam setiap 1 liter larutan. Molaritas sangat umum digunakan dalam kimia analitik, kimia fisik, dan farmasi, terutama untuk perhitungan reaksi dan stoikiometri.")
+    st.write("Rumus Molaritas adalah M= mol/Liter; Jika diketahui massa zatnya maka: M= massa zat(g)/ Mr(g/mol).Volume(L) ")
+    metode = st.radio(
+        "Metode perhitungan:",
+        ("Menggunakan massa", "Menggunakan database Mr")
+    )
+
+
+    volume = st.number_input("Volume larutan (L)", min_value=0.0)
+
+
+    if metode == "Menggunakan massa":
+        massa = st.number_input("Massa zat (g)", min_value=0.0)
+        mr = st.number_input("Mr zat", min_value=0.0)
+
+
+    else:
+        senyawa = st.selectbox("Pilih senyawa", list(mr_database.keys()))
+        massa = st.number_input("Massa zat (g)", min_value=0.0)
+        mr = mr_database[senyawa]
+        st.info(f"Mr {senyawa} = {mr}")
+
+
+    if st.button("Hitung Molaritas"):
+        if volume == 0 or mr == 0:
+            st.error("Volume dan Mr tidak boleh 0")
+        else:
+            M = massa / (mr * volume)
+            st.success(f"Molaritas = **{M:.4f} M**")
+
+
+# =========================
+# NORMALITAS
+# =========================
+elif menu == "Normalitas":
+
+
+    st.subheader("⚗️ Normalitas")
+    st.write("Normalitas (N) adalah satuan konsentrasi larutan yang menyatakan jumlah ekivalen zat terlarut dalam setiap 1 liter larutan.Normalitas banyak digunakan dalam titrasi asam–basa, redoks, dan analisis volumetri, karena langsung berkaitan dengan stoikiometri reaksi.")
+    st.write("Rumus Normalitas adalah N=ekivalen/Volume(L); Jika massanya diketahui maka N=massa zat (g). faktor ekivalen/ Mr(g/mol).Volume(L)")
+    metode = st.radio(
+        "Metode perhitungan:",
+        ("Menggunakan massa", "Menggunakan database Mr")
+    )
+
+
+    volume = st.number_input("Volume larutan (L)", min_value=0.0)
+    n = st.number_input("Faktor ekivalen (n)", min_value=0.0)
+
+
+    if metode == "Menggunakan massa":
+        massa = st.number_input("Massa zat (g)", min_value=0.0)
+        mr = st.number_input("Mr zat", min_value=0.0)
+
+
+    else:
+        senyawa = st.selectbox("Pilih senyawa", list(mr_database.keys()))
+        massa = st.number_input("Massa zat (g)", min_value=0.0)
+        mr = mr_database[senyawa]
+        st.info(f"Mr {senyawa} = {mr}")
+
+
+    if st.button("Hitung Normalitas"):
+        if volume == 0 or mr == 0 or n == 0:
+            st.error("Volume, Mr, dan n tidak boleh 0")
+        else:
+            N = (massa * n) / (mr * volume)
+            st.success(f"Normalitas = **{N:.4f} N**")
+
+
+# =========================
+# mg/L
+# =========================
+elif menu == "mg/L":
+
+
+    st.subheader("⚗️ mg/L")
+    st.write("konsentrasi mg/L (ppm) adalah cara menyatakan konsentrasi zat sebagai jumlah miligram zat terlarut dalam setiap 1 liter (L) larutan. Satuan mg/L sangat umum digunakan dalam analisis kimia, lingkungan, farmasi, dan AAS, terutama untuk menyatakan kadar zat dalam konsentrasi rendah.")
+    st.write("untuk mencari massa, kita bisa menggunakan rumus massa(mg)= konsentrasi (mg/L).Volume (L)")
+    sub = st.radio(
+        "Pilih perhitungan:",
+        ("Cari konsentrasi", "Cari massa", "Cari volume")
+    )
+
+
+    if sub == "Cari konsentrasi":
+        massa = st.number_input("Massa (mg)", min_value=0.0)
+        volume = st.number_input("Volume (L)", min_value=0.0)
+
+
+        if st.button("Hitung"):
+            st.success(f"{massa / volume:.4f} mg/L")
+
+
+    elif sub == "Cari massa":
+        kons = st.number_input("Konsentrasi (mg/L)", min_value=0.0)
+        volume = st.number_input("Volume (L)", min_value=0.0)
+
+
+        if st.button("Hitung"):
+            st.success(f"{kons * volume:.4f} mg")
+
+
+    else:
+        kons = st.number_input("Konsentrasi (mg/L)", min_value=0.0)
+        massa = st.number_input("Massa (mg)", min_value=0.0)
+
+
+        if st.button("Hitung"):
+            st.success(f"{massa / kons:.4f} L")
+
+
+# =========================
+# % b/v
+# =========================
+elif menu == "% b/v":
+
+
+    st.subheader("⚗️ % b/v")
+    st.write("(persen berat per volume) adalah satuan konsentrasi yang menyatakan jumlah zat (dalam gram) yang terdapat dalam setiap 100 mL larutan. Satuan % b/v sering digunakan dalam kimia analitik, farmasi, dan laboratorium untuk menyatakan konsentrasi larutan padat dalam cairan.")
+    st.write("Rumus %b/v= massa zat terlarut (g) /volume total campuran(mL) .100%")
+    sub = st.radio(
+        "Pilih perhitungan:",
+        ("Cari %", "Cari massa", "Cari volume")
+    )
+
+
+    if sub == "Cari %":
+        m = st.number_input("Massa (g)", min_value=0.0)
+        v = st.number_input("Volume (mL)", min_value=0.0)
+
+
+        if st.button("Hitung"):
+            st.success(f"{(m / v) * 100:.4f} % b/v")
+
+
+    elif sub == "Cari massa":
+        p = st.number_input("% b/v", min_value=0.0)
+        v = st.number_input("Volume (mL)", min_value=0.0)
+
+
+        if st.button("Hitung"):
+            st.success(f"{(p / 100) * v:.4f} g")
+
+
+    else:
+        p = st.number_input("% b/v", min_value=0.0)
+        m = st.number_input("Massa (g)", min_value=0.0)
+
+
+        if st.button("Hitung"):
+            st.success(f"{(m * 100) / p:.2f} mL")
+
+
+# =========================
+# % b/b (berat / berat)
+# =========================
+elif menu == "% b/b":
+
 
     st.subheader("⚗️ Persen berat/berat (% b/b)")
-    st.write("% b/b = gram zat terlarut per 100 gram campuran")
-
-    sub_menu = st.radio(
-        "Pilih perhitungan:",
-        (
-            "Cari % b/b",
-            "Cari massa zat (g)",
-            "Cari massa campuran (g)"
-        )
+    st.write(
+        "% b/b menyatakan jumlah zat terlarut (gram) "
+        "dalam setiap 100 gram campuran."
     )
+    st.write("% b/b sering digunakan untuk campuran padat–padat, salep, serbuk, dan sediaan farmasi atau bahan kimia yang tidak bergantung pada perubahan volume.")
+    st.write("Rumus %b/b= massa zat terlarut (g)/massa total campuran (g) .100%")
+
+
+    sub = st.radio(
+        "Pilih perhitungan:",
+        ("Cari % b/b", "Cari massa zat (g)", "Cari massa campuran (g)")
+    )
+
 
     st.markdown("---")
 
-    # 1. Cari % b/b
-    if sub_menu == "Cari % b/b":
+
+    if sub == "Cari % b/b":
         massa_zat = st.number_input(
-            "Masukkan massa zat terlarut (gram)",
-            min_value=0.0,
-            format="%.4f"
+            "Massa zat terlarut (g)", min_value=0.0, format="%.4f"
         )
         massa_total = st.number_input(
-            "Masukkan massa campuran (gram)",
-            min_value=0.0,
-            format="%.4f"
+            "Massa campuran (g)", min_value=0.0, format="%.4f"
         )
+
 
         if st.button("Hitung % b/b"):
             if massa_total == 0:
-                st.error("Massa campuran tidak boleh 0.")
+                st.error("Massa campuran tidak boleh 0")
             else:
                 persen = (massa_zat / massa_total) * 100
-                st.success(f"✅ Konsentrasi = **{persen:.4f} % b/b**")
+                st.success(f"Konsentrasi = **{persen:.4f} % b/b**")
 
-    # 2. Cari massa zat
-    elif sub_menu == "Cari massa zat (g)":
+
+    elif sub == "Cari massa zat (g)":
         persen = st.number_input(
-            "Masukkan konsentrasi (% b/b)",
-            min_value=0.0,
-            format="%.4f"
+            "Konsentrasi (% b/b)", min_value=0.0, format="%.4f"
         )
         massa_total = st.number_input(
-            "Masukkan massa campuran (gram)",
-            min_value=0.0,
-            format="%.4f"
+            "Massa campuran (g)", min_value=0.0, format="%.4f"
         )
 
-        if st.button("Hitung Massa Zat"):
-            massa_zat = (persen / 100) * massa_total
-            st.success(f"✅ Massa zat terlarut = **{massa_zat:.4f} g**")
 
-    # 3. Cari massa campuran
-    elif sub_menu == "Cari massa campuran (g)":
+        if st.button("Hitung massa zat"):
+            massa_zat = (persen / 100) * massa_total
+            st.success(f"Massa zat terlarut = **{massa_zat:.4f} g**")
+
+
+    else:  # Cari massa campuran
         persen = st.number_input(
-            "Masukkan konsentrasi (% b/b)",
-            min_value=0.0,
-            format="%.4f"
+            "Konsentrasi (% b/b)", min_value=0.0, format="%.4f"
         )
         massa_zat = st.number_input(
-            "Masukkan massa zat terlarut (gram)",
-            min_value=0.0,
-            format="%.4f"
+            "Massa zat terlarut (g)", min_value=0.0, format="%.4f"
         )
 
-        if st.button("Hitung Massa Campuran"):
+
+        if st.button("Hitung massa campuran"):
             if persen == 0:
-                st.error("Konsentrasi tidak boleh 0.")
+                st.error("Konsentrasi tidak boleh 0")
             else:
                 massa_total = (massa_zat * 100) / persen
-                st.success(f"✅ Massa campuran = **{massa_total:.4f} g**")
+                st.success(f"Massa campuran = **{massa_total:.4f} g**")
 
-if menu == "% v/v":
+
+# =========================
+# % v/v (volume / volume)
+# =========================
+elif menu == "% v/v":
+
 
     st.subheader("⚗️ Persen volume/volume (% v/v)")
-    st.write("% v/v = mL zat terlarut per 100 mL larutan")
-
-    sub_menu = st.radio(
-        "Pilih perhitungan:",
-        (
-            "Cari % v/v",
-            "Cari volume zat (mL)",
-            "Cari volume larutan (mL)"
-        )
+    st.write(
+        "% v/v menyatakan volume zat terlarut (mL) "
+        "dalam setiap 100 mL larutan."
     )
+    st.write("% v/v umum digunakan untuk menyatakan konsentrasi campuran cair–cair, misalnya alkohol, pelarut organik, dan larutan farmasi.")
+    st.write("Rumus %v/v= volume zat terlarut (mL) /volume total campuran (mL) .100%")
+
+
+    sub = st.radio(
+        "Pilih perhitungan:",
+        ("Cari % v/v", "Cari volume zat (mL)", "Cari volume larutan (mL)")
+    )
+
 
     st.markdown("---")
 
-    # 1. Cari % v/v
-    if sub_menu == "Cari % v/v":
+
+    if sub == "Cari % v/v":
         volume_zat = st.number_input(
-            "Masukkan volume zat terlarut (mL)",
-            min_value=0.0,
-            format="%.2f"
+            "Volume zat terlarut (mL)", min_value=0.0, format="%.2f"
         )
         volume_total = st.number_input(
-            "Masukkan volume larutan (mL)",
-            min_value=0.0,
-            format="%.2f"
+            "Volume larutan (mL)", min_value=0.0, format="%.2f"
         )
+
 
         if st.button("Hitung % v/v"):
             if volume_total == 0:
-                st.error("Volume larutan tidak boleh 0.")
+                st.error("Volume larutan tidak boleh 0")
             else:
                 persen = (volume_zat / volume_total) * 100
-                st.success(f"✅ Konsentrasi = **{persen:.4f} % v/v**")
+                st.success(f"Konsentrasi = **{persen:.4f} % v/v**")
 
-    # 2. Cari volume zat
-    elif sub_menu == "Cari volume zat (mL)":
+
+    elif sub == "Cari volume zat (mL)":
         persen = st.number_input(
-            "Masukkan konsentrasi (% v/v)",
-            min_value=0.0,
-            format="%.4f"
+            "Konsentrasi (% v/v)", min_value=0.0, format="%.4f"
         )
         volume_total = st.number_input(
-            "Masukkan volume larutan (mL)",
-            min_value=0.0,
-            format="%.2f"
+            "Volume larutan (mL)", min_value=0.0, format="%.2f"
         )
 
-        if st.button("Hitung Volume Zat"):
-            volume_zat = (persen / 100) * volume_total
-            st.success(f"✅ Volume zat terlarut = **{volume_zat:.2f} mL**")
 
-    # 3. Cari volume larutan
-    elif sub_menu == "Cari volume larutan (mL)":
+        if st.button("Hitung volume zat"):
+            volume_zat = (persen / 100) * volume_total
+            st.success(f"Volume zat terlarut = **{volume_zat:.2f} mL**")
+
+
+    else:  # Cari volume larutan
         persen = st.number_input(
-            "Masukkan konsentrasi (% v/v)",
-            min_value=0.0,
-            format="%.4f"
+            "Konsentrasi (% v/v)", min_value=0.0, format="%.4f"
         )
         volume_zat = st.number_input(
-            "Masukkan volume zat terlarut (mL)",
-            min_value=0.0,
-            format="%.2f"
+            "Volume zat terlarut (mL)", min_value=0.0, format="%.2f"
         )
 
-        if st.button("Hitung Volume Larutan"):
+
+        if st.button("Hitung volume larutan"):
             if persen == 0:
-                st.error("Konsentrasi tidak boleh 0.")
+                st.error("Konsentrasi tidak boleh 0")
             else:
                 volume_total = (volume_zat * 100) / persen
-                st.success(f"✅ Volume larutan = **{volume_total:.2f} mL**")
+                st.success(f"Volume larutan = **{volume_total:.2f} mL**")
+
